@@ -159,6 +159,23 @@
       pointer-events: none;
     }
 
+
+    @media (max-width: 768px) {
+      .menu-nav__item--active a,
+      .menu-nav__item:not(.menu-nav__item--active) a {
+        font-size: 48px;
+      }
+
+      .menu-nav__item {
+        margin-block: 10px;
+      }
+
+      .menu-social {
+        position: static;
+        justify-content: center;
+        margin-top: 32px;
+      }
+    }
   </style>
   <link rel="icon" type="image/png" href="data:image/png;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUNDX1BST0ZJTEUAAQEAAAHIAAAAAAQwAABtbnRyUkdCIFhZWiAH4AABAAEAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAACRyWFlaAAABFAAAABRnWFlaAAABKAAAABRiWFlaAAABPAAAABR3dHB0AAABUAAAABRyVFJDAAABZAAAAChnVFJDAAABZAAAAChiVFJDAAABZAAAAChjcHJ0AAABjAAAADxtbHVjAAAAAAAAAAEAAAAMZW5VUwAAAAgAAAAcAHMAUgBHAEJYWVogAAAAAAAAb6IAADj1AAADkFhZWiAAAAAAAABimQAAt4UAABjaWFlaIAAAAAAAACSgAAAPhAAAts9YWVogAAAAAAAA9tYAAQAAAADTLXBhcmEAAAAAAAQAAAACZmYAAPKnAAANWQAAE9AAAApbAAAAAAAAAABtbHVjAAAAAAAAAAEAAAAMZW5VUwAAACAAAAAcAEcAbwBvAGcAbABlACAASQBuAGMALgAgADIAMAAxADb/2wBDAAUDBAQEAwUEBAQFBQUGBwwIBwcHBw8LCwkMEQ8SEhEPERETFhwXExQaFRERGCEYGh0dHx8fExciJCIeJBweHx7/2wBDAQUFBQcGBw4ICA4eFBEUHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh7/wAARCAAwADADASIAAhEBAxEB/8QAFwABAQEBAAAAAAAAAAAAAAAACAAFBv/EACQQAAAGAQEJAAAAAAAAAAAAAAABAgMEBgUHERY3QVZ1lbPS/8QAFgEBAQEAAAAAAAAAAAAAAAAABQcG/8QAIREAAQQBAwUAAAAAAAAAAAAAAgABBREDBhYhM1NxkbH/2gAMAwEAAhEDEQA/AOgEIEq+W21Rrxno8ezZpllrJyENttz3UpQknVERERK2ERFyEsi4s5AyESqlYpeXCMATMXe3rhLUQGG+dw6sz3kXfoW+dw6sz3kXfoM7SzdxvToHeuDtP7ZM8QJVDttqk3jAx5FmzTzLuTjocbcnuqStJupIyMjVsMjLkFqBpSLOPMRIrtPREuEmBGAu1PXKgMNROIFj7rK9qgzwMNROIFj7rK9qgzpLrZPDfUDrXoYvL/FgiEIbpTtb2nfECud1i+1IZ4GGnfECud1i+1IZ4wuretj8P9VE0V0MvlvigSr5UrVJvGekR6zmnmXcnIW243AdUlaTdUZGRknYZGXMLUQGi5Q48yIRu09LxASYCBk7U98IYbmXDpPPeOd+RbmXDpPPeOd+QzxBndubtt7dA7Kwd1/TIlUOpWqNeMDIkVnNMstZOOtxxyA6lKEk6kzMzNOwiIuYWohAaUlDkDEiGqT0REBGAQATvb3yv//Z" />
 </head>
@@ -215,7 +232,9 @@
       sweep.getBoundingClientRect();
       sweep.style.transition = 'clip-path 1s cubic-bezier(0.76, 0, 0.24, 1)';
       sweep.style.clipPath = 'inset(0 0% 0 0)';
-      setTimeout(function() { window.location.href = dest; }, 1020);
+      setTimeout(function() {
+        window.location.href = dest;
+      }, 1020);
     }
 
     /* ── Nav links ── */
@@ -260,6 +279,17 @@
       });
       if (moving) raf = requestAnimationFrame(tick);
     }
+
+    /* ── bfcache: reset sweep only when restored from cache ── */
+    window.addEventListener('pageshow', function(e) {
+      if (!e.persisted) return;
+      var sweep = document.getElementById('sweep');
+      if (sweep) {
+        sweep.style.transition = 'none';
+        sweep.style.clipPath = 'inset(0 100% 0 0)';
+        sweep.style.display = 'none';
+      }
+    });
   </script>
 
   <div class="sweep-overlay" id="sweep"></div>
