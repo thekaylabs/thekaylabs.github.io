@@ -1,0 +1,23 @@
+/* ============================================================
+   ANIMATIONS — scroll reveal, parallax transition helpers
+   ============================================================ */
+
+/* Dot grid parallax wrappers */
+.hero__dots--tr,
+.hero__dots--ml,
+.page-hero__dots--tr,
+.page-hero__dots--bl {
+  transition: transform 0.7s cubic-bezier(0.23, 1, 0.32, 1);
+  will-change: transform;
+}
+
+/* Scroll-reveal base state — JS adds transition + removes */
+.reveal {
+  opacity: 0;
+  transform: translateY(28px);
+}
+
+.reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
