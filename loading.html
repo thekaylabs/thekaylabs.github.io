@@ -167,6 +167,18 @@
         window.location.href = 'index.html';
       }, 1020);
     }
+
+    /* ── bfcache fix: only reset when restored from cache, not on first load ── */
+    window.addEventListener('pageshow', function(e) {
+      if (!e.persisted) return;  // 正常載入不處理，只處理 bfcache 還原
+      var sweep = document.getElementById('sweep');
+      if (sweep) {
+        sweep.style.transition = 'none';
+        sweep.style.clipPath = 'inset(0 100% 0 0)';
+        sweep.style.display = '';
+      }
+    });
+
   </script>
 
 </body>
