@@ -738,6 +738,9 @@
       /* Contact: hide decorative squares */
       .contact__square--tr,
       .contact__square--bl         { display: none; }
+
+      /* Hero title mobile size */
+      .hero__title { font-size: 48px !important; }
     }
 
     /* ── Sweep overlay — hidden until triggered ── */
@@ -1091,13 +1094,28 @@
       sweep.getBoundingClientRect(); // force reflow
       sweep.style.transition = 'clip-path 1s cubic-bezier(0.76, 0, 0.24, 1)';
       sweep.style.clipPath = 'inset(0 0% 0 0)';
-      setTimeout(function() { window.location.href = dest; }, 1020);
+      setTimeout(function() {
+        window.location.href = dest;
+      }, 1020);
     }
 
     /* ── Menu button → black sweep → menu.html ── */
     document.querySelector('.nav-menu-btn').addEventListener('click', function() {
       triggerSweep('#000000', 'menu.html');
     });
+
+    /* ── bfcache: reset sweep only when restored from cache ── */
+    window.addEventListener('pageshow', function(e) {
+      if (!e.persisted) return;
+      var sweep = document.getElementById('sweep');
+      if (sweep) {
+        sweep.style.transition = 'none';
+        sweep.style.clipPath = 'inset(0 100% 0 0)';
+        sweep.style.display = 'none';
+      }
+      document.body.style.overflow = '';
+    });
+
   </script>
 
 </body>
