@@ -10,8 +10,8 @@
   <meta property="og:title"       content="The Kay Labs" />
   <meta property="og:description" content="Exploring design in all its forms." />
   <meta property="og:image"       content="https://thekaylabs.github.io/og-image.png" />
-  <meta property="og:image:width"  content="1259" />
-  <meta property="og:image:height" content="833" />
+  <meta property="og:image:width"  content="1200" />
+  <meta property="og:image:height" content="630" />
   <meta name="twitter:card"        content="summary_large_image" />
   <meta name="twitter:title"       content="The Kay Labs" />
   <meta name="twitter:description" content="Exploring design in all its forms." />
@@ -162,6 +162,36 @@
 
 
 
+    /* ── Close button — same look as the back-to-top button on
+          every other page (.back-to-top): 48px orange square,
+          white glyph, turns dark on hover. Top-right corner. ── */
+    .menu-close {
+      position: fixed;
+      top: 32px;
+      right: 32px;
+      z-index: 10000;
+      width: 48px;
+      height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: #FF7423;
+      color: #fff;
+      font-family: 'Poppins', sans-serif;
+      font-size: 20px;
+      line-height: 1;
+      border: none;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+    }
+
+    .menu-close:hover { background-color: #262626; }
+
+    .menu-close:focus-visible {
+      outline: 1.5px solid #262626;
+      outline-offset: 3px;
+    }
+
     /* ── Sweep overlay — hidden until triggered ── */
     .sweep-overlay {
       display: none;
@@ -192,6 +222,10 @@
   <link rel="icon" type="image/png" href="data:image/png;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUNDX1BST0ZJTEUAAQEAAAHIAAAAAAQwAABtbnRyUkdCIFhZWiAH4AABAAEAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAACRyWFlaAAABFAAAABRnWFlaAAABKAAAABRiWFlaAAABPAAAABR3dHB0AAABUAAAABRyVFJDAAABZAAAAChnVFJDAAABZAAAAChiVFJDAAABZAAAAChjcHJ0AAABjAAAADxtbHVjAAAAAAAAAAEAAAAMZW5VUwAAAAgAAAAcAHMAUgBHAEJYWVogAAAAAAAAb6IAADj1AAADkFhZWiAAAAAAAABimQAAt4UAABjaWFlaIAAAAAAAACSgAAAPhAAAts9YWVogAAAAAAAA9tYAAQAAAADTLXBhcmEAAAAAAAQAAAACZmYAAPKnAAANWQAAE9AAAApbAAAAAAAAAABtbHVjAAAAAAAAAAEAAAAMZW5VUwAAACAAAAAcAEcAbwBvAGcAbABlACAASQBuAGMALgAgADIAMAAxADb/2wBDAAUDBAQEAwUEBAQFBQUGBwwIBwcHBw8LCwkMEQ8SEhEPERETFhwXExQaFRERGCEYGh0dHx8fExciJCIeJBweHx7/2wBDAQUFBQcGBw4ICA4eFBEUHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh7/wAARCAAwADADASIAAhEBAxEB/8QAFwABAQEBAAAAAAAAAAAAAAAACAAFBv/EACQQAAAGAQEJAAAAAAAAAAAAAAABAgMEBgUHERY3QVZ1lbPS/8QAFgEBAQEAAAAAAAAAAAAAAAAABQcG/8QAIREAAQQBAwUAAAAAAAAAAAAAAgABBREDBhYhM1NxkbH/2gAMAwEAAhEDEQA/AOgEIEq+W21Rrxno8ezZpllrJyENttz3UpQknVERERK2ERFyEsi4s5AyESqlYpeXCMATMXe3rhLUQGG+dw6sz3kXfoW+dw6sz3kXfoM7SzdxvToHeuDtP7ZM8QJVDttqk3jAx5FmzTzLuTjocbcnuqStJupIyMjVsMjLkFqBpSLOPMRIrtPREuEmBGAu1PXKgMNROIFj7rK9qgzwMNROIFj7rK9qgzpLrZPDfUDrXoYvL/FgiEIbpTtb2nfECud1i+1IZ4GGnfECud1i+1IZ4wuretj8P9VE0V0MvlvigSr5UrVJvGekR6zmnmXcnIW243AdUlaTdUZGRknYZGXMLUQGi5Q48yIRu09LxASYCBk7U98IYbmXDpPPeOd+RbmXDpPPeOd+QzxBndubtt7dA7Kwd1/TIlUOpWqNeMDIkVnNMstZOOtxxyA6lKEk6kzMzNOwiIuYWohAaUlDkDEiGqT0REBGAQATvb3yv//Z" />
 </head>
 <body>
+
+  <button class="menu-close" id="menu-close" aria-label="Close navigation menu">
+    &#215;
+  </button>
 
   <div class="menu-wrap">
 
@@ -235,6 +269,7 @@
     'use strict';
 
 /* ── Sweep helper ── */
+    // dest: a URL string, or a function to run once the sweep has covered the screen
     function triggerSweep(color, dest) {
       var sweep = document.getElementById('sweep');
       sweep.style.backgroundColor = color;
@@ -245,9 +280,36 @@
       sweep.style.transition = 'clip-path 1s cubic-bezier(0.76, 0, 0.24, 1)';
       sweep.style.clipPath = 'inset(0 0% 0 0)';
       setTimeout(function() {
-        window.location.href = dest;
+        if (typeof dest === 'function') dest();
+        else window.location.href = dest;
       }, 1020);
     }
+
+    /* ── Close: go back to the page the menu was opened from ── */
+    var closing = false;
+    function closeMenu() {
+      if (closing) return;
+      closing = true;
+      var ref = '';
+      try {
+        var r = new URL(document.referrer);
+        if (r.origin === location.origin) ref = r.pathname.split('/').pop();
+      } catch (err) { /* no referrer: opened directly */ }
+
+      triggerSweep('#FF7423', function() {
+        // loading.html only plays the intro and redirects, so treat it as home
+        if (ref && ref !== 'menu.html' && ref !== 'loading.html' && history.length > 1) {
+          history.back();
+        } else {
+          window.location.href = 'index.html';
+        }
+      });
+    }
+
+    document.getElementById('menu-close').addEventListener('click', closeMenu);
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') closeMenu();
+    });
 
     /* ── Nav links ── */
     document.querySelectorAll('.menu-nav__item a').forEach(function(link) {
@@ -295,6 +357,7 @@
     /* ── bfcache: reset sweep only when restored from cache ── */
     window.addEventListener('pageshow', function(e) {
       if (!e.persisted) return;
+      closing = false;
       var sweep = document.getElementById('sweep');
       if (sweep) {
         sweep.style.transition = 'none';
