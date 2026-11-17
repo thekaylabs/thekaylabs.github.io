@@ -10,8 +10,8 @@
   <meta property="og:title"       content="Project — The Kay Labs" />
   <meta property="og:description" content="UI/UX, WebGL & 3D Design work." />
   <meta property="og:image"       content="https://thekaylabs.github.io/og-image.png" />
-  <meta property="og:image:width"  content="1259" />
-  <meta property="og:image:height" content="833" />
+  <meta property="og:image:width"  content="1200" />
+  <meta property="og:image:height" content="630" />
   <meta name="twitter:card"        content="summary_large_image" />
   <meta name="twitter:title"       content="Project — The Kay Labs" />
   <meta name="twitter:description" content="UI/UX, WebGL & 3D Design work." />
@@ -473,8 +473,9 @@
     .popup-close {
       position: absolute;
       top: 100px;
-      /* sits just to the right of the panel */
-      left: calc(50% + 500px + 40px);
+      /* sits just to the right of the panel; on narrow screens it stays
+         inside the 80px side padding instead of leaving the viewport */
+      left: min(calc(50% + 500px + 40px), calc(100% - 66px));
       width: 52px;
       height: 52px;
       background-color: var(--color-accent);
@@ -547,6 +548,10 @@
     @media (max-width: 560px) {
       .gallery-grid { grid-template-columns: 1fr; }
       .contact__square--tr, .contact__square--bl { display: none; }
+      /* popup: use the full width on phones, close button above the panel */
+      .popup-inner  { padding: 84px 16px 40px; }
+      .popup-panel  { padding: 12px; }
+      .popup-close  { top: 16px; left: auto; right: 16px; }
     }
 
     @media (max-width: 768px) {
